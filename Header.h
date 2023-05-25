@@ -1,16 +1,17 @@
+//6
 #ifndef HEADER_H
 #define HEADER_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-typedef struct igrac
+typedef struct igrac //3. 10.
 {
 	char ime[20];
 	int br;
 }IGRAC;
 IGRAC igrac;
-void izbornik(void);
+void izbornik(void); //8
 void unos(void);
 void izlaz(void);
 void ponoviIgru(int);
