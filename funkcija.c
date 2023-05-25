@@ -1,13 +1,13 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "Header.h"
 
-void izbornik(void) {
-	int izbor = 0;
+void izbornik(void) { //10. //7.
+	int izbor = 0; //1.
 	do {
-		printf("Dobro dosli u kviz:\n\n1. Pokreni kviz\n2. Rezultat\n3. Upute za igranje\n4. Izlaz\n\n");
+		printf("Dobro dosli na kviz:\n\n1. Pokreni kviz\n2. Rezultat\n3. Upute za igranje\n4. Izlaz\n\n");
 		scanf("%d", &izbor);
 
 		switch (izbor) {
@@ -35,23 +35,23 @@ void izbornik(void) {
 
 
 
-void unos(void) {
+void unos(void) { //10.
 	int i, score = 0;
 	int broj = 0;
 
-	char linija[256];
+	char linija[256]; //11.
 	FILE* fp;
-	char opcija[200], opcija1[200], opcija2[200], opcija3[200], opcija4[200], tocno[200];
+	char opcija[200], opcija1[200], opcija2[200], opcija3[200], opcija4[200], tocno[200] ;
 
-	fp = fopen("Pitanja.txt", "r");
-	if (fp == NULL) {
-		printf("Nije moguće otvoriti datoteku s pitanjima Pitanja.txt");
+	fp = fopen("Pitanja.txt", "r"); //16. tekstualna datoteka
+	if (fp == NULL) { //16.
+		printf("Nije moguce otvoriti tekstualnu datoteku Pitanja.txt");
 		exit(1);
 	}
 
 	for (i = 0; i < 15; i++) { // Ucitavanje 15 pitanja iz datoteke
 		fgets(linija, sizeof(linija), fp); // Ucitavanje pitanja
-		printf("\nPitanje %d.) %s", i + 1, linija);
+		printf("\nPitanje %d %s", i + 1, linija);
 
 		fgets(linija, sizeof(linija), fp); // Ucitavanje opcije A
 		strncpy(opcija1, linija, 50);
@@ -69,11 +69,11 @@ void unos(void) {
 		strncpy(opcija4, linija, 50);
 		printf("%s", linija);
 
-		fgets(linija, sizeof(linija), fp); // Ucitavanje tocnog odgovora
-		strncpy(tocno, linija, 50);
-		printf("\n%s (ovo je točan odgovor)\n", tocno);
+		//fgets(linija, sizeof(linija), fp); // Ucitavanje tocnog odgovora
+		//strncpy(tocno, linija, 50);
+		//printf("\n%s (ovo je tocan odgovor)\n", tocno);
 
-		char odgovor[200];
+		char odgovor[200]; //2.
 		printf("Unesite odgovor (A/B/C/D): ");
 		scanf("%s", odgovor);
 		//getchar(); 
@@ -85,7 +85,7 @@ void unos(void) {
 			score += 10; // Dodavanje bodova za točan odgovor
 		}
 		else {
-			printf("Netočan odgovor!\n");
+			printf("Netocan odgovor!\n");
 		}
 		printf("Trenutni broj bodova: %d\n", score);
 	}
@@ -101,10 +101,10 @@ void unos(void) {
 
 void izlaz(void) // funkcija za izlaz iz programa
 {
-	char da[] = "da";
+	char da[] = "da"; //2.
 	char ne[] = "ne";
 	char choose[3] = { 0 };
-	printf("Jeste li sigurni da zelite izaci iz kviza?\n->Da\n->Ne\n\n");
+	printf("Jeste li sigurni da zelite izaci iz kviza?\nDa\nNe\n");
 	scanf("%s", &choose);
 	if (_strcmpi(da, choose) == 0) //strcmpi - usporedba dva stringa                          
 	{
@@ -124,13 +124,13 @@ void izlaz(void) // funkcija za izlaz iz programa
 }
 
 
-void ponoviIgru(int num) { //funkcija koja nam opciju da ponovno pokrenemo kviz
+void ponoviIgru(int broj) { //funkcija koja nam opciju da ponovno pokrenemo kviz
 
 	char da[] = "da";
 	char ne[] = "ne";
 	char choose[3] = { 0 };
-	printf("\nRezultat: %d kn\n", num);
-	printf("Pokusaj ponovno?\n->Da\n->Ne\n\n");
+	printf("\nRezultat: %d kn\n", broj);
+	printf("Pokusaj ponovno?\nDa\nNe\n\n");
 	scanf("%s", &choose);
 	if (_strcmpi(da, choose) == 0)
 	{
@@ -138,31 +138,31 @@ void ponoviIgru(int num) { //funkcija koja nam opciju da ponovno pokrenemo kviz
 	}
 	if (_strcmpi(ne, choose) == 0)
 	{
-		upis_score(num); //poziva funkciju za upis imena i bodova 
+		upis_score(broj); //poziva funkciju za upis imena i bodova 
 	}
 	else
 	{
 		system("cls");
 		printf("\n('da'/'ne')\n\n");
-		ponoviIgru(num);
+		ponoviIgru(broj);
 	}
 }
 
 
-void upis_score(int num) { //upisuje rezultat u tablicu
+void upis_score(int broj) { //upisuje rezultat u tablicu
 
-	int n = 0, m = 0;
+	int n = 0, m = 0; //1.
 	FILE* ft = NULL;
-	ft = fopen("tablica.bin", "rb"); // read bin
+	ft = fopen("tablica.bin", "rb"); //16. read bin
 	if (ft == NULL)
 	{
-		fflush(ft);
+		fflush(ft); //16.
 		ft = fopen("tablica.bin", "wb");//Ako ne postoji tablica.bin program ju napravi, // write bin
 
 		fwrite(&n, sizeof(int), 1, ft);
 	}
-	fclose(ft);
-	IGRAC* igrac = NULL;
+	fclose(ft); //16.
+	IGRAC* igrac = NULL; //9.
 	igrac = (IGRAC*)calloc(1, sizeof(IGRAC));
 	if (igrac == NULL) {
 		exit(1);
@@ -175,15 +175,15 @@ void upis_score(int num) { //upisuje rezultat u tablicu
 	}
 	else
 	{
-		fread(&m, sizeof(int), 1, fp);
+		fread(&m, sizeof(int), 1, fp); //17.
 		m++;
-		fseek(fp, 0, SEEK_SET);
-		fwrite(&m, sizeof(int), 1, fp);
+		fseek(fp, 0, SEEK_SET); //17.
+		fwrite(&m, sizeof(int), 1, fp); //17.
 		fseek(fp, 0, SEEK_END);
-		printf("Osvojen iznos: %d\n", num);
+		printf("Osvojen iznos: %d\n", broj);
 		printf("Ime igraca: ");
-		scanf(" %[^\n]%*c", igrac->ime); 
-		igrac->br = num;
+		scanf(" %[^\n]%*c", igrac->ime);
+		igrac->br = broj;
 		fwrite(igrac, sizeof(IGRAC), 1, fp);
 		system("cls");
 	}
@@ -192,11 +192,11 @@ void upis_score(int num) { //upisuje rezultat u tablicu
 
 
 
-void tablica_rez(void) { //tablica rezultata koja sortira i pretrazuje 
+void tablica_rez(void) { //tablica rezultata koja sortira i pretrazuje //8
 	int m = 0, n = 0;
 	system("cls");
 	FILE* fp = NULL;
-	fp = fopen("tablica.bin", "rb+");
+	fp = fopen("tablica.bin", "rb+"); //16. bin
 	if (fp == NULL)
 	{
 		printf("Nema prijasnjih rezultata"); //vraca nas na izbornik ukoliko nema odigranih kvizova
@@ -207,8 +207,8 @@ void tablica_rez(void) { //tablica rezultata koja sortira i pretrazuje
 
 		fread(&m, sizeof(int), 1, fp); //ucitava podatke iz filea u polje koje je dano preko pokazivaca
 		IGRAC* igrac = NULL;
-		igrac = (IGRAC*)calloc(m, sizeof(IGRAC)); //alociramo memoriju
-		if (igrac == NULL) {
+		igrac = (IGRAC*)calloc(m, sizeof(IGRAC)); //14. alociramo memoriju
+		if (igrac == NULL) { //14.
 			printf("Error");
 			exit(1);
 		}
@@ -250,9 +250,9 @@ void tablica_rez(void) { //tablica rezultata koja sortira i pretrazuje
 }
 
 
-void sortiranje_rezultata(IGRAC* igrac, const int n) { //sortiranje
+void sortiranje_rezultata(IGRAC* igrac, const int n) { // funkcija za sortiranje rezultata //20
 	if (igrac == NULL) {
-		printf("Error linija 357");
+		printf("Error");
 		exit(1);
 	}
 	int min = 0;
@@ -271,10 +271,10 @@ void sortiranje_rezultata(IGRAC* igrac, const int n) { //sortiranje
 }
 
 
-void sortiranje_imena(IGRAC* igrac, const int n) //sortiranje
+void sortiranje_imena(IGRAC* igrac, const int n) //funkcija za sortiranje imenav //20
 {
 	if (igrac == NULL) {
-		printf("Error linija 397");
+		printf("Error");
 		exit(1);
 	}
 	int min = 0;
@@ -293,7 +293,7 @@ void sortiranje_imena(IGRAC* igrac, const int n) //sortiranje
 }
 
 
-void sort(IGRAC* veci, IGRAC* manji) // sortiranje
+void sort(IGRAC* veci, IGRAC* manji) // sortiranje (selection sort) //9. //20
 {
 	IGRAC temp;
 	if (veci == NULL || manji == NULL) {
@@ -306,7 +306,7 @@ void sort(IGRAC* veci, IGRAC* manji) // sortiranje
 }
 
 
-void ispis_imena(IGRAC* igrac, const int n) { //ispis po imenu
+void ispis_imena(IGRAC* igrac, const int n) { //ispis po imenu //4.
 	int i;
 	if (igrac == NULL) {
 		printf("Error");
@@ -356,10 +356,10 @@ void povratak(void) // povratak na izbornik
 
 void broj_igraca(void)
 {
-	int brojkvizova;
+	int BrojKvizova; //4.
 	FILE* fp;
 	fp = fopen("tablica.bin", "rb+");
-	rewind(fp);//postavlja file poziciju na pocetak
+	rewind(fp);// 17. postavlja file poziciju na pocetak 
 	if (fp == NULL)
 	{
 		printf("Error");
@@ -368,8 +368,8 @@ void broj_igraca(void)
 	else
 	{
 		fseek(fp, 0, SEEK_END);// kraj filea
-		brojkvizova = ftell(fp) / sizeof(IGRAC);//cita broj zapisanih igraca a ftell vraca trenutnu poziciju u fileu
-		printf("Broj odigranih kvizova: %d\n\n", brojkvizova);
+		BrojKvizova = ftell(fp) / sizeof(IGRAC);//cita broj zapisanih igraca a ftell vraca trenutnu poziciju u fileu
+		printf("Broj odigranih kvizova: %d\n\n", BrojKvizova);
 	}
 	fclose(fp);
 }
@@ -393,7 +393,7 @@ void pretrazivanje_igraca(void) //funkcija koja pretrazuje igraca
 
 	while (fread(&igrac, sizeof(igrac), 1, fp) == 1)
 	{
-		if (_strcmpi(igrac.ime, (polje)) == 0) //_strcmpi usporeduje uneseno ime s imenima u strukturi(nije case sensitive nalazi se u string.h)
+		if (_strcmpi(igrac.ime, (polje)) == 0) //_strcmpi usporeduje uneseno ime s imenima u strukturi(nije case sensitive nalazi se u string.h) //18.
 		{
 			printf("\nIme: %s\nBroj bodova: %d\n", igrac.ime, igrac.br);
 			brojac++;
@@ -413,7 +413,7 @@ void ponovno_pretrazivanje(void)
 	char da[] = "da";
 	char ne[] = "ne";
 	char choose[3] = { 0 };
-	printf("\n\nZelite li ponovo pretraziti igraca?\n->Da\n->Ne\n");
+	printf("\n\nZelite li ponovo pretraziti igraca?\nDa\nNe\n");
 	scanf("%s", &choose);
 	if (_strcmpi(da, choose) == 0) //strcmpi usporedjuje stringove
 	{
@@ -429,12 +429,15 @@ void ponovno_pretrazivanje(void)
 	{
 		system("cls");
 		printf("('da'/'ne')\n\n");
-		ponovno_pretrazivanje();   //rekurzija (funkcija se poziva dok se uvijet ne ispuni
+		ponovno_pretrazivanje();   // 1. rekurzija
 	}
 }
 void informacije(void)
 {
 	system("cls");
-	printf("\nDobrodosli u kviz!\nKviz se sastoji od 15 pitanja, sa 3 ponudena odgovora di je samo jedan tocan odgovor.\nKako bi unijeli odgovor upisite jedno od opcija A B C D.\nSvoje rezultate i rezultate drugih igraca mozete vidjeti sortirane.\nSretno! :)\n\n");
+	printf("Kviz se sastoji od 15 pitanja, sa 3 ponudena odgovora di je samo jedan tocan odgovor.");
+	printf("\nKako bi ste unijeli odgovor upisite jedno od opcija A B C D.");
+	printf("\nSvoje rezultate i rezultate drugih igraca mozete vidjeti sortirane.");
+	printf("\nSretno!:)");
 	povratak();//vracam se na izbornik
 }
