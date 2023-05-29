@@ -145,7 +145,7 @@ void unos(void) {
         char odgovor;
         printf("Unesite odgovor (A/B/C/D): ");
         scanf(" %c", &odgovor);
-        getchar(); // Ukloni preostali newline karakter iz input buffer-a
+        getchar();
 
         if (toupper(odgovor) == pitanja[i].tocanOdgovor) {
             printf("Tocan odgovor!\n");
