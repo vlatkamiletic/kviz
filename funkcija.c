@@ -1,7 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #include <string.h>
+#include <ctype.h>
 #include "Header.h"
 
 void izbornik(void) { //10. //7.
@@ -34,70 +36,133 @@ void izbornik(void) { //10. //7.
 }
 
 
+void unos(void) {
+    int i, score = 0; //1
+    int broj = 0;
 
-void unos(void) { //10.
-	int i, score = 0;
-	int broj = 0;
+    char linija[256];//2. 11.
+    FILE* fp;
+    char pitanje[256], opcijaA[256], opcijaB[256], opcijaC[256], opcijaD[256], tocanOdgovor;//2.
 
-	char linija[256]; //11.
-	FILE* fp;
-	char opcija[200], opcija1[200], opcija2[200], opcija3[200], opcija4[200], tocno[200] ;
+    fp = fopen("Pitanja.txt", "r"); //16.
+    if (fp == NULL) {
+        printf("Nije moguce otvoriti datoteku Pitanja.txt");
+        exit(1);
+    }
 
-	fp = fopen("Pitanja.txt", "r"); //16. tekstualna datoteka
-	if (fp == NULL) { //16.
-		printf("Nije moguce otvoriti tekstualnu datoteku Pitanja.txt");
-		exit(1);
-	}
+    for (i = 0; i < 15; i++) {
+        fgets(pitanje, sizeof(pitanje), fp);
+        printf("%s", pitanje);
 
-	for (i = 0; i < 15; i++) { // Ucitavanje 15 pitanja iz datoteke
-		fgets(linija, sizeof(linija), fp); // Ucitavanje pitanja
-		printf("\nPitanje %d %s", i + 1, linija);
+        fgets(opcijaA, sizeof(opcijaA), fp);
+        printf("%s", opcijaA);
 
-		fgets(linija, sizeof(linija), fp); // Ucitavanje opcije A
-		strncpy(opcija1, linija, 50);
-		printf("%s", linija);
+        fgets(opcijaB, sizeof(opcijaB), fp);
+        printf("%s", opcijaB);
 
-		fgets(linija, sizeof(linija), fp); // Ucitavanje opcije B
-		strncpy(opcija2, linija, 50);
-		printf("%s", linija);
+        fgets(opcijaC, sizeof(opcijaC), fp);
+        printf("%s", opcijaC);
 
-		fgets(linija, sizeof(linija), fp); // Ucitavanje opcije C
-		strncpy(opcija3, linija, 50);
-		printf("%s", linija);
+        fgets(opcijaD, sizeof(opcijaD), fp);
+        printf("%s", opcijaD);
 
-		fgets(linija, sizeof(linija), fp); // Ucitavanje opcije D
-		strncpy(opcija4, linija, 50);
-		printf("%s", linija);
+        fgets(linija, sizeof(linija), fp); // Preskakanje prazne linije
 
-		//fgets(linija, sizeof(linija), fp); // Ucitavanje tocnog odgovora
-		//strncpy(tocno, linija, 50);
-		//printf("\n%s (ovo je tocan odgovor)\n", tocno);
+        printf("Unesite odgovor (A/B/C/D): ");
+        scanf(" %c", &tocanOdgovor);
 
-		char odgovor[200]; //2.
-		printf("Unesite odgovor (A/B/C/D): ");
-		scanf("%s", odgovor);
-		//getchar(); 
-		//int getchar(void);
+        if (toupper(tocanOdgovor) == 'A' || tolower(tocanOdgovor) == 'a') {
+            tocanOdgovor = 'A';
+        }
+        else if (toupper(tocanOdgovor) == 'B' || tolower(tocanOdgovor) == 'b') {
+            tocanOdgovor = 'B';
+        }
+        else if (toupper(tocanOdgovor) == 'C' || tolower(tocanOdgovor) == 'c') {
+            tocanOdgovor = 'C';
+        }
+        else if (toupper(tocanOdgovor) == 'D' || tolower(tocanOdgovor) == 'd') {
+            tocanOdgovor = 'D';
+        }
+        else {
+            printf("Neispravan unos odgovora.\n");
+            printf("Trenutni broj bodova: %d\n\n", score);
+            continue;
+        }
 
+        char odgovor;
+        printf("Unesite odgovor (A/B/C/D): ");
+        scanf(" %c", &odgovor);
 
-		if (strcmp(odgovor, tocno) == 0) { // Usporedba odgovora s tocnim odgovorom
-			printf("Tocan odgovor!\n");
-			score += 10; // Dodavanje bodova za točan odgovor
-		}
-		else {
-			printf("Netocan odgovor!\n");
-		}
-		printf("Trenutni broj bodova: %d\n", score);
-	}
+        if (toupper(odgovor) == tocanOdgovor) {
+            printf("Tocan odgovor!\n");
+            score += 10;
+        }
+        else {
+            printf("Netocan odgovor!\n");
+        }
+        printf("Trenutni broj bodova: %d\n\n", score);
+    }
 
-	broj = score;
-	printf("\nUkupno osvojeno %d bodova.\n", score);
+    broj = score;
+    printf("\nUkupno osvojeno %d bodova.\n", score);
 
-	fclose(fp);
+    fclose(fp);
 
-	ponoviIgru(broj); // Funkcija koja ispisuje broj osvojenih bodova i pita za ponovno igranje
+    ponoviIgru(broj);
 }
 
+/*
+void unos(void) {
+    int i, score = 0;
+    int broj = 0;
+
+    Pitanje pitanja[16];
+
+    FILE* fp = fopen("Pitanja.txt", "r");
+    if (fp == NULL) {
+        printf("Nije moguce otvoriti datoteku Pitanja.txt\n");
+        exit(1);
+    }
+
+    for (i = 0; i < 16; i++) {
+        fgets(pitanja[i].pitanje, sizeof(pitanja[i].pitanje), fp);
+        fgets(pitanja[i].opcijaA, sizeof(pitanja[i].opcijaA), fp);
+        fgets(pitanja[i].opcijaB, sizeof(pitanja[i].opcijaB), fp);
+        fgets(pitanja[i].opcijaC, sizeof(pitanja[i].opcijaC), fp);
+        fgets(pitanja[i].opcijaD, sizeof(pitanja[i].opcijaD), fp);
+        fgets(&pitanja[i].tocanOdgovor, sizeof(pitanja[i].tocanOdgovor), fp);
+    }
+
+    fclose(fp);
+
+    for (i = 0; i < 15; i++) {
+        printf("\nPitanje %d:\n%s", i + 1, pitanja[i].pitanje);
+        printf("A) %s", pitanja[i].opcijaA);
+        printf("B) %s", pitanja[i].opcijaB);
+        printf("C) %s", pitanja[i].opcijaC);
+        printf("D) %s", pitanja[i].opcijaD);
+
+        char odgovor;
+        printf("Unesite odgovor (A/B/C/D): ");
+        scanf(" %c", &odgovor);
+        getchar(); // Ukloni preostali newline karakter iz input buffer-a
+
+        if (toupper(odgovor) == pitanja[i].tocanOdgovor) {
+            printf("Tocan odgovor!\n");
+            score += 10;
+        } else {
+            printf("Netocan odgovor!\n");
+        }
+        printf("Trenutni broj bodova: %d\n\n", score);
+    }
+
+    broj = score;
+    printf("\nUkupno osvojeno %d bodova.\n", score);
+
+    ponoviIgru(broj);
+}*/
+
+////////////////////////////////////////////////////////////////////////
 
 void izlaz(void) // funkcija za izlaz iz programa
 {
@@ -171,7 +236,12 @@ void upis_score(int broj) { //upisuje rezultat u tablicu
 	fp = fopen("tablica.bin", "rb+");
 	if (fp == NULL)
 	{
-		exit(1);
+		printf("Value of errno: %d\n ", errno); // 19
+		printf("The error message is : No such file or directory %s\n", strerror(errno)); // 19
+		perror("Message from perror: No such file or directory"); // 19
+  
+    return 0;
+}
 	}
 	else
 	{
@@ -192,7 +262,7 @@ void upis_score(int broj) { //upisuje rezultat u tablicu
 
 
 
-void tablica_rez(void) { //tablica rezultata koja sortira i pretrazuje //8
+void tablica_rez(void) { //tablica rezultata koja sortira i pretrazuje //8 podizbornik
 	int m = 0, n = 0;
 	system("cls");
 	FILE* fp = NULL;
@@ -377,23 +447,23 @@ void broj_igraca(void)
 
 void pretrazivanje_igraca(void) //funkcija koja pretrazuje igraca
 {
-	int brojac = 0;
+	static int brojac = 0; //5.
 	FILE* fp = NULL;
-	fp = fopen("tablica.bin", "rb+");
+	fp = fopen("tablica.bin", "rb+"); //16.
 	if (fp == NULL)
 	{
 		printf("Error");
 		exit(1);
 	}
-	fseek(fp, 0, SEEK_END); // kraj filea
+	fseek(fp, 0, SEEK_END); // kraj filea //17.
 	fseek(fp, sizeof(int), SEEK_SET); //postavlja se na pocetak filea 
-	char polje[20] = { 0 };
+	char polje[20] = { 0 }; //12.
 	printf("Unesite ime: ");
 	scanf(" %[^\n]%*c", polje);
 
 	while (fread(&igrac, sizeof(igrac), 1, fp) == 1)
 	{
-		if (_strcmpi(igrac.ime, (polje)) == 0) //_strcmpi usporeduje uneseno ime s imenima u strukturi(nije case sensitive nalazi se u string.h) //18.
+		if (_strcmpi(igrac.ime, (polje)) == 0) //_strcmpi usporeduje uneseno ime s imenima u strukturi //18.
 		{
 			printf("\nIme: %s\nBroj bodova: %d\n", igrac.ime, igrac.br);
 			brojac++;
@@ -403,7 +473,7 @@ void pretrazivanje_igraca(void) //funkcija koja pretrazuje igraca
 	{
 		printf("Ime nije pronadeno");
 	}
-	ponovno_pretrazivanje(); //ponovno trazenj
+	ponovno_pretrazivanje(); //ponovno trazenje
 	fclose(fp);
 }
 
@@ -418,12 +488,12 @@ void ponovno_pretrazivanje(void)
 	if (_strcmpi(da, choose) == 0) //strcmpi usporedjuje stringove
 	{
 		system("cls");
-		pretrazivanje_igraca(); // ako je da pozivamo funkciju za pretrazivanje igraca
+		pretrazivanje_igraca(); // ako je da, pozivamo funkciju za pretrazivanje igraca
 	}
 	if (_strcmpi(ne, choose) == 0)
 	{
 		system("cls");
-		izbornik();   // ako je ne vracamo se na izbornik
+		izbornik();   // ako je ne, vracamo se na izbornik
 	}
 	else
 	{
