@@ -5,13 +5,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+typedef struct {
+    char pitanje[256];
+    char opcijaA[256];
+    char opcijaB[256];
+    char opcijaC[256];
+    char opcijaD[256];
+    char tocanOdgovor;
+} Pitanje;
+
 typedef struct igrac //3. 10.
 {
 	char ime[20];
 	int br;
 }IGRAC;
 IGRAC igrac;
-void izbornik(void); //8
+void izbornik(void); //8.
 void unos(void);
 void izlaz(void);
 void ponoviIgru(int);
