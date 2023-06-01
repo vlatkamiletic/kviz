@@ -7,17 +7,17 @@
 #include <time.h>
 
 typedef struct {
-    char pitanje[256];
-    char opcijaA[256];
-    char opcijaB[256];
-    char opcijaC[256];
-    char opcijaD[256];
-    char tocanOdgovor;
+	char pitanje[256]; //13.
+	char opcijaA[256];
+	char opcijaB[256];
+	char opcijaC[256];
+	char opcijaD[256];
+	char tocanOdgovor;
 } Pitanje;
 
 typedef struct igrac //3. 10.
 {
-	char ime[20];
+	char ime[20];//13.
 	int br;
 }IGRAC;
 IGRAC igrac;
