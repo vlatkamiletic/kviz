@@ -6,7 +6,7 @@
 #include <ctype.h>
 #include "Header.h"
 
-void izbornik(void) { //10. //7.
+int izbornik(void) { //10. //7.
 	int izbor = 0; //1.
 	do {
 		printf("Dobro dosli na kviz:\n\n1. Pokreni kviz\n2. Rezultat\n3. Upute za igranje\n4. Izlaz\n\n");
@@ -36,130 +36,181 @@ void izbornik(void) { //10. //7.
 }
 
 
-void unos(void) {
-    int i, score = 0; //1
-    int broj = 0;
+void unos() {
+	int bodovi = 0;
+	Pitanje pitanja[15];
 
-    char linija[256];//2. 11.
-    FILE* fp;
-    char pitanje[256], opcijaA[256], opcijaB[256], opcijaC[256], opcijaD[256], tocanOdgovor;//2.
+	FILE* file = fopen("Pitanja.txt", "r");
+	if (file == NULL) {
+		printf("Greška pri otvaranju datoteke!\n");
+		return;
+	}
 
-    fp = fopen("Pitanja.txt", "r"); //16.
-    if (fp == NULL) {
-        printf("Nije moguce otvoriti datoteku Pitanja.txt");
-        exit(1);
-    }
+	// Učitavanje pitanja iz datoteke
+	int i;
+	for (i = 0; i < 15; i++) {
+		fgets(pitanja[i].pitanje, sizeof(pitanja[i].pitanje), file);
+		fgets(pitanja[i].opcijaA, sizeof(pitanja[i].opcijaA), file);
+		fgets(pitanja[i].opcijaB, sizeof(pitanja[i].opcijaB), file);
+		fgets(pitanja[i].opcijaC, sizeof(pitanja[i].opcijaC), file);
+		fgets(pitanja[i].opcijaD, sizeof(pitanja[i].opcijaD), file);
+		fscanf(file, " %c", &pitanja[i].tocanOdgovor);
+		fgetc(file); // Preskoči novi red
+	}
 
-    for (i = 0; i < 15; i++) {
-        fgets(pitanje, sizeof(pitanje), fp);
-        printf("%s", pitanje);
+	fclose(file);
 
-        fgets(opcijaA, sizeof(opcijaA), fp);
-        printf("%s", opcijaA);
+	// Postavljanje pitanja korisniku
+	for (i = 0; i < 15; i++) {
+		printf("%s", pitanja[i].pitanje);
+		printf("A) %s", pitanja[i].opcijaA);
+		printf("B) %s", pitanja[i].opcijaB);
+		printf("C) %s", pitanja[i].opcijaC);
+		printf("D) %s", pitanja[i].opcijaD);
 
-        fgets(opcijaB, sizeof(opcijaB), fp);
-        printf("%s", opcijaB);
+		// Korisnik unosi odgovor
+		char odgovor;
+		printf("Unesite odgovor (A, B, C, D): ");
+		scanf(" %c", &odgovor);
 
-        fgets(opcijaC, sizeof(opcijaC), fp);
-        printf("%s", opcijaC);
+		// Provjerava točnost odgovora
+		if (tolower(odgovor) == tolower(pitanja[i].tocanOdgovor)) {
+			bodovi += 1000;
+			printf("Točan odgovor!\n");
+		}
+		else {
+			printf("Netočan odgovor!\n");
+		}
+	}
 
-        fgets(opcijaD, sizeof(opcijaD), fp);
-        printf("%s", opcijaD);
-
-        fgets(linija, sizeof(linija), fp); // Preskakanje prazne linije
-
-        printf("Unesite odgovor (A/B/C/D): ");
-        scanf(" %c", &tocanOdgovor);
-
-        if (toupper(tocanOdgovor) == 'A' || tolower(tocanOdgovor) == 'a') {
-            tocanOdgovor = 'A';
-        }
-        else if (toupper(tocanOdgovor) == 'B' || tolower(tocanOdgovor) == 'b') {
-            tocanOdgovor = 'B';
-        }
-        else if (toupper(tocanOdgovor) == 'C' || tolower(tocanOdgovor) == 'c') {
-            tocanOdgovor = 'C';
-        }
-        else if (toupper(tocanOdgovor) == 'D' || tolower(tocanOdgovor) == 'd') {
-            tocanOdgovor = 'D';
-        }
-        else {
-            printf("Neispravan unos odgovora.\n");
-            printf("Trenutni broj bodova: %d\n\n", score);
-            continue;
-        }
-
-        char odgovor;
-        printf("Unesite odgovor (A/B/C/D): ");
-        scanf(" %c", &odgovor);
-
-        if (toupper(odgovor) == tocanOdgovor) {
-            printf("Tocan odgovor!\n");
-            score += 10;
-        }
-        else {
-            printf("Netocan odgovor!\n");
-        }
-        printf("Trenutni broj bodova: %d\n\n", score);
-    }
-
-    broj = score;
-    printf("\nUkupno osvojeno %d bodova.\n", score);
-
-    fclose(fp);
-
-    ponoviIgru(broj);
+	printf("Konačni broj bodova: %d\n", bodovi);
 }
+
+
+//void unos(void) {
+//	int i, score = 0; //1
+//	int broj = 0;
+//
+//	char linija[256];//2. 11.
+//	FILE* fp;
+//	char pitanje[256], opcijaA[256], opcijaB[256], opcijaC[256], opcijaD[256], tocanOdgovor;//2.
+//
+//	fp = fopen("Pitanja.txt", "r"); //16.
+//	if (fp == NULL) {
+//		printf("Nije moguce otvoriti datoteku Pitanja.txt");
+//		exit(1);
+//	}
+//
+//	for (i = 0; i < 15; i++) {
+//		fgets(pitanje, sizeof(pitanje), fp);
+//		printf("%s", pitanje);
+//
+//		fgets(opcijaA, sizeof(opcijaA), fp);
+//		printf("%s", opcijaA);
+//
+//		fgets(opcijaB, sizeof(opcijaB), fp);
+//		printf("%s", opcijaB);
+//
+//		fgets(opcijaC, sizeof(opcijaC), fp);
+//		printf("%s", opcijaC);
+//
+//		fgets(opcijaD, sizeof(opcijaD), fp);
+//		printf("%s", opcijaD);
+//
+//		fgets(linija, sizeof(linija), fp); // Preskakanje prazne linije
+//
+//		printf("Unesite odgovor (A/B/C/D): ");
+//		scanf(" %c", &tocanOdgovor);
+//
+//		if (toupper(tocanOdgovor) == 'A' || tolower(tocanOdgovor) == 'a') {
+//			tocanOdgovor = 'A';
+//		}
+//		else if (toupper(tocanOdgovor) == 'B' || tolower(tocanOdgovor) == 'b') {
+//			tocanOdgovor = 'B';
+//		}
+//		else if (toupper(tocanOdgovor) == 'C' || tolower(tocanOdgovor) == 'c') {
+//			tocanOdgovor = 'C';
+//		}
+//		else if (toupper(tocanOdgovor) == 'D' || tolower(tocanOdgovor) == 'd') {
+//			tocanOdgovor = 'D';
+//		}
+//		else {
+//			printf("Neispravan unos odgovora.\n");
+//			printf("Trenutni broj bodova: %d\n\n", score);
+//			continue;
+//		}
+//
+//		char odgovor;
+//		printf("Unesite odgovor (A/B/C/D): ");
+//		scanf(" %c", &odgovor);
+//
+//		if (toupper(odgovor) == tocanOdgovor) {
+//			printf("Tocan odgovor!\n");
+//			score += 10;
+//		}
+//		else {
+//			printf("Netocan odgovor!\n");
+//		}
+//		printf("Trenutni broj bodova: %d\n\n", score);
+//	}
+//
+//	broj = score;
+//	printf("\nUkupno osvojeno %d bodova.\n", score);
+//
+//	fclose(fp);
+//
+//	ponoviIgru(broj);
+//}
 
 /*
 void unos(void) {
-    int i, score = 0;
-    int broj = 0;
+	int i, score = 0;
+	int broj = 0;
 
-    Pitanje pitanja[16];
+	Pitanje pitanja[16];
 
-    FILE* fp = fopen("Pitanja.txt", "r");
-    if (fp == NULL) {
-        printf("Nije moguce otvoriti datoteku Pitanja.txt\n");
-        exit(1);
-    }
+	FILE* fp = fopen("Pitanja.txt", "r");
+	if (fp == NULL) {
+		printf("Nije moguce otvoriti datoteku Pitanja.txt\n");
+		exit(1);
+	}
 
-    for (i = 0; i < 16; i++) {
-        fgets(pitanja[i].pitanje, sizeof(pitanja[i].pitanje), fp);
-        fgets(pitanja[i].opcijaA, sizeof(pitanja[i].opcijaA), fp);
-        fgets(pitanja[i].opcijaB, sizeof(pitanja[i].opcijaB), fp);
-        fgets(pitanja[i].opcijaC, sizeof(pitanja[i].opcijaC), fp);
-        fgets(pitanja[i].opcijaD, sizeof(pitanja[i].opcijaD), fp);
-        fgets(&pitanja[i].tocanOdgovor, sizeof(pitanja[i].tocanOdgovor), fp);
-    }
+	for (i = 0; i < 16; i++) {
+		fgets(pitanja[i].pitanje, sizeof(pitanja[i].pitanje), fp);
+		fgets(pitanja[i].opcijaA, sizeof(pitanja[i].opcijaA), fp);
+		fgets(pitanja[i].opcijaB, sizeof(pitanja[i].opcijaB), fp);
+		fgets(pitanja[i].opcijaC, sizeof(pitanja[i].opcijaC), fp);
+		fgets(pitanja[i].opcijaD, sizeof(pitanja[i].opcijaD), fp);
+		fgets(&pitanja[i].tocanOdgovor, sizeof(pitanja[i].tocanOdgovor), fp);
+	}
 
-    fclose(fp);
+	fclose(fp);
 
-    for (i = 0; i < 15; i++) {
-        printf("\nPitanje %d:\n%s", i + 1, pitanja[i].pitanje);
-        printf("A) %s", pitanja[i].opcijaA);
-        printf("B) %s", pitanja[i].opcijaB);
-        printf("C) %s", pitanja[i].opcijaC);
-        printf("D) %s", pitanja[i].opcijaD);
+	for (i = 0; i < 15; i++) {
+		printf("\nPitanje %d:\n%s", i + 1, pitanja[i].pitanje);
+		printf("A) %s", pitanja[i].opcijaA);
+		printf("B) %s", pitanja[i].opcijaB);
+		printf("C) %s", pitanja[i].opcijaC);
+		printf("D) %s", pitanja[i].opcijaD);
 
-        char odgovor;
-        printf("Unesite odgovor (A/B/C/D): ");
-        scanf(" %c", &odgovor);
-        getchar();
+		char odgovor;
+		printf("Unesite odgovor (A/B/C/D): ");
+		scanf(" %c", &odgovor);
+		getchar();
 
-        if (toupper(odgovor) == pitanja[i].tocanOdgovor) {
-            printf("Tocan odgovor!\n");
-            score += 10;
-        } else {
-            printf("Netocan odgovor!\n");
-        }
-        printf("Trenutni broj bodova: %d\n\n", score);
-    }
+		if (toupper(odgovor) == pitanja[i].tocanOdgovor) {
+			printf("Tocan odgovor!\n");
+			score += 10;
+		} else {
+			printf("Netocan odgovor!\n");
+		}
+		printf("Trenutni broj bodova: %d\n\n", score);
+	}
 
-    broj = score;
-    printf("\nUkupno osvojeno %d bodova.\n", score);
+	broj = score;
+	printf("\nUkupno osvojeno %d bodova.\n", score);
 
-    ponoviIgru(broj);
+	ponoviIgru(broj);
 }*/
 
 ////////////////////////////////////////////////////////////////////////
@@ -239,10 +290,10 @@ void upis_score(int broj) { //upisuje rezultat u tablicu
 		printf("Value of errno: %d\n ", errno); // 19
 		printf("The error message is : No such file or directory %s\n", strerror(errno)); // 19
 		perror("Message from perror: No such file or directory"); // 19
-  
-    return 0;
-}
+
+		return 0;
 	}
+}
 	else
 	{
 		fread(&m, sizeof(int), 1, fp); //17.
@@ -256,8 +307,8 @@ void upis_score(int broj) { //upisuje rezultat u tablicu
 		igrac->br = broj;
 		fwrite(igrac, sizeof(IGRAC), 1, fp);
 		system("cls");
-	}
-	fclose(fp);
+		}
+		fclose(fp);
 }
 
 
