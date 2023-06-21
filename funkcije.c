@@ -11,7 +11,7 @@ void izbornik(void) { //10.
 	printf("\t\tDobro dosli na kviz: ");
 
 	do {
-		printf("\n\n1. Pokreni kviz\n2. Rezultat\n3. Upute za igranje\n4. Resetiranje tablice\n5. Izlaz\n\n");
+		printf("\n\n1. Pokreni kviz\n2. Rezultat\n3. Upute za igranje\n4. Izlaz\n\n");
 		scanf("%d", &izbor);
 
 		switch (izbor) {
@@ -27,11 +27,8 @@ void izbornik(void) { //10.
 			system("cls");
 			informacije();
 			break;
+
 		case 4:
-			system("cls");
-			brisanje_datoteke();
-			break;
-		case 5:
 			system("cls");
 			izlaz();
 		default:
@@ -41,7 +38,6 @@ void izbornik(void) { //10.
 		}
 	} while (1);
 }
-
 
 
 void unos() {
@@ -56,7 +52,7 @@ void unos() {
 	FILE* file = fopen("Pitanja.txt", "r");
 	if (file == NULL) {
 		perror("Greska pri otvaranju datoteke!");
-		free(pitanja); 
+		free(pitanja);
 		return;
 	}
 
@@ -84,13 +80,13 @@ void unos() {
 			scanf(" %s%*c", odgovor);
 
 			if (strlen(odgovor) != 1) {
-				printf("Neispravan unos. Molim vas, unesite samo jedan znakova (A, B, C ili D).\n");
+				printf("Neispravan unos. Molim vas, unesite samo jedan od znakova (A, B, C ili D).\n");
 				continue;
 			}
 
 			char uneseniOdgovor = toupper(odgovor[0]);
 			if (uneseniOdgovor != 'A' && uneseniOdgovor != 'B' && uneseniOdgovor != 'C' && uneseniOdgovor != 'D') {
-				printf("Neispravan unos. Molim vas, unesite jedan od znakova (A, B, C ili D).\n");
+				printf("Neispravan unos. Molim vas, unesite samo jedan od znakova (A, B, C ili D).\n");
 			}
 			else {
 				break;
@@ -143,8 +139,6 @@ void izlaz(void) // funkcija za izlaz iz programa
 }
 
 
-
-
 void upis_score(int broj) { //upisuje rezultat u tablicu
 
 	int n = 0, m = 0; //1.
@@ -186,34 +180,6 @@ void upis_score(int broj) { //upisuje rezultat u tablicu
 }
 
 
-void brisanje_datoteke() {
-	char odgovor[3] = { 0 };
-
-	printf("Jeste li sigurni da zelite izbrisati tablicu?\n");
-	printf("'da' / 'ne'\n");
-	scanf("%2s", odgovor); 
-
-	if (_strcmpi(odgovor, "da") == 0) {
-		if (remove("tablica.bin") == 0) {
-			printf("Tablica je uspjesno izbrisana.\n");
-		}
-		else {
-			printf("Pogreska pri brisanju tablice.\n");
-		}
-	}
-	else if (_strcmpi(odgovor, "ne") == 0) {
-		printf("Tablica nije izbrisana.\n");
-	}
-	else {
-		printf("Pogresan unos! Molim vas, unesite 'da' ili 'ne'.\n");
-		brisanje_datoteke();
-	}
-	system("cls");
-}
-
-
-
-
 void tablica_rez(void) { //tablica rezultata koja sortira i pretrazuje //8 podizbornik
 	int m = 0, n = 0;
 	system("cls");
@@ -250,7 +216,7 @@ void tablica_rez(void) { //tablica rezultata koja sortira i pretrazuje //8 podiz
 			case 2:
 				system("cls");
 				sortiranje_rezultata(igrac, m);
-				ispis_rezultata(igrac, m);
+				ispis_imena(igrac, m);
 				povratak();
 				break;
 			case 3:
@@ -293,7 +259,7 @@ void sortiranje_rezultata(IGRAC* igrac, const int n) {//20.
 }
 
 
-void sortiranje_imena(IGRAC* igrac, const int n) {//20. abc
+void sortiranje_imena(IGRAC* igrac, const int n) {//20. 
 	if (igrac == NULL) {
 		perror("Error");
 		exit(1);
@@ -337,20 +303,6 @@ void ispis_imena(IGRAC* igrac, const int n) { //4.
 	for (i = 0; i < n; i++)
 	{
 		printf("\n%d. Ime: %s\nBodovi: %d\n", (i + 1), (igrac + i)->ime, (igrac + i)->br);
-	}
-}
-
-
-void ispis_rezultata(IGRAC* igrac, const int n) { //11.
-	int i;
-	if (igrac == NULL) {
-		perror("Error");
-		exit(1);
-	}
-
-	for (i = 0; i < n; i++)
-	{
-		printf("\n%d. Ime: %s\nOsvojeno bodova: %d\n", (i + 1), (igrac + i)->ime, (igrac + i)->br);
 	}
 }
 
