@@ -24,9 +24,7 @@ IGRAC igrac;
 void izbornik(void); //8.
 void unos(void);
 void izlaz(void);
-//void ponoviIgru(int);
 void upis_score(int);
-void brisanje_datoteke();
 void tablica_rez(void);
 void sort(IGRAC*, IGRAC*);
 void sortiranje_imena(IGRAC*, const int);//11.
@@ -40,3 +38,4 @@ void ponovno_pretrazivanje(void);
 void informacije(void);
 
 #endif //Header.h
+
